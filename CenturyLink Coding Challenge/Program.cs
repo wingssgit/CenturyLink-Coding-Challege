@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using System.Linq;
 using Octokit;
 
 namespace CenturyLink_Coding_Challenge
