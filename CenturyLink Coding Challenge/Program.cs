@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Linq;
 using Octokit;
 
 namespace CenturyLink_Coding_Challenge
@@ -10,18 +11,20 @@ namespace CenturyLink_Coding_Challenge
 	class Program
 	{
 		private static Dictionary<string, GitUser> UserList = new Dictionary<string, GitUser>();
+		
 		static void Main(string[] args)
 		{
-			//Replace "username" and "password" with your github username and password to raise the calls per hour limit on the github api - otherwise you're going to have a bad time
-			var credentials = new Credentials("username", "password");
+			Login LoginForm = new Login();
+			LoginForm.ShowDialog();
 
 			var ghClient = new GitHubClient(new ProductHeaderValue("GitInfoApp"));
-			ghClient.Credentials = credentials;
+			ghClient.Credentials = new Credentials(G.Login, G.Password);
+
 
 			tryagain:
 			Console.WriteLine("Enter github username to begin:");
-			string szName = Console.ReadLine();
-			szName = Regex.Replace(szName, "[^a-zA-Z0-9]", "");
+			var szName = Console.ReadLine();
+			szName = Regex.Replace(szName, "[^a-zA-Z0-9-]", "");
 			if (szName == "")
 			{
 				Console.WriteLine("Invalid username, try again.");
@@ -36,6 +39,7 @@ namespace CenturyLink_Coding_Challenge
 			{
 				Stopwatch sw = new Stopwatch();
 				sw.Start();
+
 				GitUser gitUser = GetUserInfo(ghClient, szName, "[Root]").Result;
 
 				if (gitUser.FollowCount == 0)
@@ -82,7 +86,7 @@ namespace CenturyLink_Coding_Challenge
 			catch (Exception e)
 			{
 				Console.WriteLine("");
-				Console.WriteLine($"The user \"{szName}\" does not exist or is invalid. Enter 1 to try again or 2 to view the exception.");
+				Console.WriteLine($"An error occurred. Enter 1 to try again or 2 to view the exception.");
 				string userInput = Console.ReadLine();
 				Console.Clear();
 				UserList.Clear();
@@ -99,7 +103,6 @@ namespace CenturyLink_Coding_Challenge
 			UserList.Clear();
 			if (input == "1")
 				goto tryagain;
-
 		}
 		
 		private static void PrintUserDetails(GitUser user)

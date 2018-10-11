@@ -40,25 +40,9 @@ namespace CenturyLink_Coding_Challenge
 		}
 	}
 
-	/*public class GitRepo
+	public static class G
 	{
-		public string Name;
-		public string Owner;
-		public string[] Stargazers;
-
-		public GitRepo(string repoName, string owner, string[] stargazers)
-		{
-			Name = repoName;
-			Owner = owner;
-			Stargazers = stargazers;
-		}
-
-		public GitRepo(string repoName, string owner)
-		{
-			Name = repoName;
-			Owner = owner;
-			Stargazers = null;
-		}
-		
-	}*/
+		public static string Login { get; set; }
+		public static string Password { get; set; }
+	}
 }
